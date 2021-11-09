@@ -1106,8 +1106,8 @@ public class TestTrinoDatabaseMetaData
                         .map(schemaTableName -> list(COUNTING_CATALOG, schemaTableName.getSchemaName(), schemaTableName.getTableName(), "TABLE"))
                         .collect(toImmutableList()),
                 new MetadataCallsCount()
-                        .withListSchemasCount(1)
-                        .withListTablesCount(2));
+                        .withListSchemasCount(2)
+                        .withListTablesCount(1));
 
         // Equality predicate on table name
         assertMetadataCalls(
@@ -1120,7 +1120,7 @@ public class TestTrinoDatabaseMetaData
                         list(COUNTING_CATALOG, "test_schema2", "test_table1", "TABLE")),
                 new MetadataCallsCount()
                         .withListSchemasCount(1)
-                        .withListTablesCount(2));
+                        .withGetTableHandleCount(2));
 
         // LIKE predicate on table name
         assertMetadataCalls(
@@ -1132,8 +1132,9 @@ public class TestTrinoDatabaseMetaData
                         list(COUNTING_CATALOG, "test_schema1", "test_table1", "TABLE"),
                         list(COUNTING_CATALOG, "test_schema2", "test_table1", "TABLE")),
                 new MetadataCallsCount()
-                        .withListSchemasCount(1)
-                        .withListTablesCount(2));
+                        .withListSchemasCount(3)
+                        .withListTablesCount(6)
+                        .withGetTableHandleCount(2));
 
         // Equality predicate on schema name and table name
         assertMetadataCalls(
@@ -1153,8 +1154,9 @@ public class TestTrinoDatabaseMetaData
                         list("TABLE_CAT", "TABLE_SCHEM", "TABLE_NAME", "TABLE_TYPE")),
                 list(list(COUNTING_CATALOG, "test_schema1", "test_table1", "TABLE")),
                 new MetadataCallsCount()
-                        .withListSchemasCount(1)
-                        .withListTablesCount(2));
+                        .withListSchemasCount(2)
+                        .withListTablesCount(2)
+                        .withGetTableHandleCount(1));
 
         // catalog does not exist
         assertMetadataCalls(
@@ -1173,8 +1175,7 @@ public class TestTrinoDatabaseMetaData
                         list("TABLE_CAT", "TABLE_SCHEM", "TABLE_NAME", "TABLE_TYPE")),
                 list(),
                 new MetadataCallsCount()
-                        .withListSchemasCount(1)
-                        .withListTablesCount(2));
+                        .withListSchemasCount(1));
 
         // empty table name
         assertMetadataCalls(
@@ -1184,8 +1185,7 @@ public class TestTrinoDatabaseMetaData
                         list("TABLE_CAT", "TABLE_SCHEM", "TABLE_NAME", "TABLE_TYPE")),
                 list(),
                 new MetadataCallsCount()
-                        .withListSchemasCount(1)
-                        .withListTablesCount(2));
+                        .withListSchemasCount(1));
 
         // no table types selected
         assertMetadataCalls(
